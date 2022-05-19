@@ -1,7 +1,9 @@
 package com.rsecinformation.cursomc.config;
 
 import com.rsecinformation.cursomc.entities.Categoria;
+import com.rsecinformation.cursomc.entities.Produto;
 import com.rsecinformation.cursomc.repositories.CategoriaRepositorie;
+import com.rsecinformation.cursomc.repositories.ProdutoRepositorie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,10 @@ import java.util.Arrays;
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
-    CategoriaRepositorie categoriaRepositorie;
+    private CategoriaRepositorie categoriaRepositorie;
+
+    @Autowired
+    private ProdutoRepositorie produtoRepositorie;
 
     @Override
     public void run(String... args) throws Exception {
@@ -22,6 +27,20 @@ public class TestConfig implements CommandLineRunner {
         Categoria cat1 = new Categoria(null, "Infomática");
         Categoria cat2 = new Categoria(null, "Escritório");
 
+        Produto p1 = new Produto(null, "Computador", 2000.00);
+        Produto p2 = new Produto(null, "Impressora", 800.00);
+        Produto p3 = new Produto(null, "Mouse", 80.00);
+
+        cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
+        cat2.getProdutos().addAll(Arrays.asList(p2));
+
+
+        p1.getCategorias().addAll(Arrays.asList(cat1));
+        p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
+        p3.getCategorias().addAll(Arrays.asList(cat1));
+
         categoriaRepositorie.saveAll(Arrays.asList(cat1, cat2));
+        produtoRepositorie.saveAll(Arrays.asList(p1, p2, p3));
+
     }
 }
