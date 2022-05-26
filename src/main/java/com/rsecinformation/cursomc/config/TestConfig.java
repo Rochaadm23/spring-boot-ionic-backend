@@ -1,13 +1,8 @@
 package com.rsecinformation.cursomc.config;
 
-import com.rsecinformation.cursomc.entities.Categoria;
-import com.rsecinformation.cursomc.entities.Cidade;
-import com.rsecinformation.cursomc.entities.Estado;
-import com.rsecinformation.cursomc.entities.Produto;
-import com.rsecinformation.cursomc.repositories.CategoriaRepositorie;
-import com.rsecinformation.cursomc.repositories.CidadeRepositorie;
-import com.rsecinformation.cursomc.repositories.EstadoRepositorie;
-import com.rsecinformation.cursomc.repositories.ProdutoRepositorie;
+import com.rsecinformation.cursomc.entities.*;
+import com.rsecinformation.cursomc.entities.enums.TipoCliente;
+import com.rsecinformation.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +15,19 @@ import java.util.Arrays;
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
-    private CategoriaRepositorie categoriaRepositorie;
+    private CategoriaRepository categoriaRepository;
     @Autowired
-    private ProdutoRepositorie produtoRepositorie;
+    private ProdutoRepository produtoRepository;
     @Autowired
-    private EstadoRepositorie estadoRepositorie;
+    private EstadoRepository estadoRepository;
     @Autowired
-    CidadeRepositorie cidadeRepositorie;
+    private CidadeRepository cidadeRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,8 +47,8 @@ public class TestConfig implements CommandLineRunner {
         p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
         p3.getCategorias().addAll(Arrays.asList(cat1));
 
-        categoriaRepositorie.saveAll(Arrays.asList(cat1, cat2));
-        produtoRepositorie.saveAll(Arrays.asList(p1, p2, p3));
+        categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+        produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "São Paulo");
@@ -59,8 +60,21 @@ public class TestConfig implements CommandLineRunner {
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2, c3));
 
-        estadoRepositorie.saveAll(Arrays.asList(est1, est2));
-        cidadeRepositorie.saveAll(Arrays.asList(c1, c2, c3));
+        estadoRepository.saveAll(Arrays.asList(est1, est2));
+        cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+        Cliente cli1 =  new Cliente(null,"Bartolomeu Simpson","bart@gmail.com","999.555.888.32", TipoCliente.PESSOAFISICA);
+
+        cli1.getTelefones().addAll(Arrays.asList("21973633259", "2138009150"));
+
+        Endereco e1 = new Endereco(null, "Rua flores", "300","Apto 203","Jardim","38220834",cli1,c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105","Sala 800","Centro","38777012",cli1,c2);
+
+        cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+
+        clienteRepository.saveAll(Arrays.asList(cli1));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
 
     }
 }

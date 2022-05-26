@@ -1,8 +1,9 @@
 package com.rsecinformation.cursomc.repositories;
 
-import com.rsecinformation.cursomc.entities.Categoria;
+import com.rsecinformation.cursomc.entities.Cidade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoriaRepositorie extends JpaRepository<Categoria, Integer> {}
+public interface CidadeRepository extends JpaRepository<Cidade, Integer> {
+}
