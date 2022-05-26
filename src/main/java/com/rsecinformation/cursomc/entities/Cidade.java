@@ -1,5 +1,7 @@
 package com.rsecinformation.cursomc.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class Cidade implements Serializable {
     private Integer id;
     private String name;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;

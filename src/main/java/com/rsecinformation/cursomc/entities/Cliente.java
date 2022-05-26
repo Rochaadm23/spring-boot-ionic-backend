@@ -1,6 +1,11 @@
 package com.rsecinformation.cursomc.entities;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rsecinformation.cursomc.entities.enums.TipoCliente;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.type.CustomCollectionType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,10 +24,12 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
-    @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cliente")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Endereco> enderecos = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
