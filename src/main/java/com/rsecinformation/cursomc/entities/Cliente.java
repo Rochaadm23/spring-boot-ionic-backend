@@ -24,7 +24,6 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "cliente")
     @Fetch(FetchMode.SUBSELECT)
     private List<Endereco> enderecos = new ArrayList<>();
@@ -33,7 +32,7 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

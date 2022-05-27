@@ -19,7 +19,6 @@ public class Categoria implements Serializable {
     private Integer id;
     private String name;
 
-    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categorias", cascade = CascadeType.ALL)
     private List<Produto> produtos = new ArrayList<>();
 
