@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,17 +46,18 @@ public class CategoriaResource {
         return ResponseEntity.ok().body(listDto);
     }
 
+    @Transactional
     @PostMapping
-    public ResponseEntity<Categoria> insert(@RequestBody CategoriaDTO objDto) {
+    public ResponseEntity<Categoria> insert(@Valid @RequestBody CategoriaDTO objDto) {
         Categoria obj = categoriaService.fromDTO(objDto);
         obj = categoriaService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
     }
 
-    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody CategoriaDTO objDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
         Categoria obj = categoriaService.fromDTO(objDto);
         obj = categoriaService.update(id, obj);
         return ResponseEntity.ok().body(obj);
