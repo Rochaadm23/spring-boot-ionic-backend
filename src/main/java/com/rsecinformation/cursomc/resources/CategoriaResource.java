@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -25,6 +27,12 @@ public class CategoriaResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping
+    public ResponseEntity<List<CategoriaDTO>> findAll(){
+        List<Categoria> list = categoriaService.findAll();
+        List<CategoriaDTO> listDto = list.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDto);
+    }
     @PostMapping
     public ResponseEntity<Categoria> insert(@RequestBody CategoriaDTO objDto) {
         Categoria obj = categoriaService.fromDTO(objDto);
