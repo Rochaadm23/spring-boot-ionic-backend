@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class Produto implements Serializable{
+public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,9 +40,9 @@ public class Produto implements Serializable{
     }
 
     @JsonIgnore
-    public List<Pedido> getPedidos(){
+    public List<Pedido> getPedidos() {
         List<Pedido> lista = new ArrayList<>();
-        for (ItemPedido x:itens) {
+        for (ItemPedido x : itens) {
             lista.add(x.getPedido());
         }
         return lista;
