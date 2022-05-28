@@ -4,11 +4,13 @@ import com.rsecinformation.cursomc.dto.CategoriaDTO;
 import com.rsecinformation.cursomc.entities.Categoria;
 import com.rsecinformation.cursomc.repositories.CategoriaRepository;
 import com.rsecinformation.cursomc.services.exceptions.DataIntegrityException;
-import com.rsecinformation.cursomc.services.exceptions.DatabaseException;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,6 +30,11 @@ public class CategoriaService {
 
     public List<Categoria> findAll(){
         return categoriaRepository.findAll();
+    }
+
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return categoriaRepository.findAll(pageRequest);
     }
 
     public Categoria insert(Categoria obj) {
