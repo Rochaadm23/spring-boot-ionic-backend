@@ -5,6 +5,7 @@ import com.rsecinformation.cursomc.entities.Categoria;
 import com.rsecinformation.cursomc.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,4 +33,11 @@ public class CategoriaResource {
         return ResponseEntity.created(uri).body(obj);
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody CategoriaDTO objDto){
+        Categoria obj = categoriaService.fromDTO(objDto);
+        obj = categoriaService.update(id, obj);
+        return ResponseEntity.ok().body(obj);
+    }
 }
