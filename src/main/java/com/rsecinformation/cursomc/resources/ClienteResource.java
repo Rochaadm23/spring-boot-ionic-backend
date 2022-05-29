@@ -2,6 +2,7 @@ package com.rsecinformation.cursomc.resources;
 
 import com.rsecinformation.cursomc.dto.CategoriaDTO;
 import com.rsecinformation.cursomc.dto.ClienteDTO;
+import com.rsecinformation.cursomc.dto.ClienteNewDTO;
 import com.rsecinformation.cursomc.entities.Categoria;
 import com.rsecinformation.cursomc.entities.Cliente;
 import com.rsecinformation.cursomc.services.CategoriaService;
@@ -26,13 +27,13 @@ public class ClienteResource {
     private ClienteService clienteService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable Integer id){
-       Cliente obj = clienteService.findById(id);
-       return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
+        Cliente obj = clienteService.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> findAll(){
+    public ResponseEntity<List<ClienteDTO>> findAll() {
         List<Cliente> list = clienteService.findAll();
         List<ClienteDTO> listDto = list.stream().map(x -> new ClienteDTO(x)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
@@ -41,17 +42,17 @@ public class ClienteResource {
     @GetMapping(value = "/page")
     public ResponseEntity<Page<ClienteDTO>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-            @RequestParam(value = "direction", defaultValue = "ASC")String direction){
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         Page<Cliente> list = clienteService.findPage(page, linesPerPage, orderBy, direction);
-        Page<ClienteDTO> listDto = list.map(x -> new ClienteDTO(x)) ;
+        Page<ClienteDTO> listDto = list.map(x -> new ClienteDTO(x));
         return ResponseEntity.ok().body(listDto);
     }
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
+    public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteNewDTO objDto) {
         Cliente obj = clienteService.fromDTO(objDto);
         obj = clienteService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
