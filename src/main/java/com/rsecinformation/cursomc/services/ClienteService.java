@@ -67,7 +67,7 @@ public class ClienteService {
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possível excluir um cliente por que há entidades relacionadas");
+            throw new DataIntegrityException("Não é possível excluir um cliente por que há pedidos relacionados");
         }
     }
 

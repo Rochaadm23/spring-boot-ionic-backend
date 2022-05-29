@@ -24,7 +24,7 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cliente")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cliente")
     @Fetch(FetchMode.SUBSELECT)
     private List<Endereco> enderecos = new ArrayList<>();
 
