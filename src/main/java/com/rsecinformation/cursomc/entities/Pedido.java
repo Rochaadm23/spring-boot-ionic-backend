@@ -39,7 +39,7 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
     private Set<ItemPedido> itens = new HashSet<>();
 
-    public Pedido() {
+      public Pedido() {
     }
 
     public Pedido(Integer id, Date instant, Cliente cliente, Endereco enderecoDeEntrega) {
@@ -49,6 +49,13 @@ public class Pedido implements Serializable {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public double getValorTotal(){
+          double soma =0.0;
+        for (ItemPedido ip: itens) {
+            soma = soma + ip.getSubTotal();
+        }
+        return soma;
+    }
     public Integer getId() {
         return id;
     }
