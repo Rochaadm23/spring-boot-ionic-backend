@@ -1,10 +1,12 @@
 package com.rsecinformation.cursomc.entities;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rsecinformation.cursomc.entities.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento{
     private static final long serialVersionUID = 1L;
 
