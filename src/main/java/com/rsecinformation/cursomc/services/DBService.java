@@ -56,13 +56,13 @@ public class DBService {
         Produto p11 = new Produto(null, "Shampoo", 90.00);
 
 
-        cat1.getProdutos().addAll(Arrays.asList(p1,, p6));
+        cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
+        cat2.getProdutos().addAll(Arrays.asList(p2, p4));
+        cat3.getProdutos().addAll(Arrays.asList(p5, p6));
         cat4.getProdutos().addAll(Arrays.asList(p1, p2, p7));
         cat5.getProdutos().addAll(Arrays.asList(p8));
         cat6.getProdutos().addAll(Arrays.asList(p9, p10));
-        cat7.getProdutos().addAll(Arrays.asList p2, p3));
-        cat2.getProdutos().addAll(Arrays.asList(p2, p4));
-        cat3.getProdutos().addAll(Arrays.asList(p5(p11));
+        cat7.getProdutos().addAll(Arrays.asList(p11));
 
         p1.getCategorias().addAll(Arrays.asList(cat1, cat4));
         p2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
