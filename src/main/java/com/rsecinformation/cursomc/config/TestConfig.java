@@ -19,7 +19,7 @@ import java.util.Arrays;
 @Profile("test")
 public class TestConfig {
 
-
+    @Autowired
     private DBService dbService;
 
     @Bean
