@@ -24,9 +24,9 @@ public class ProdutoResource {
     private ProdutoService produtoService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Produto> findById(@PathVariable Integer id){
-       Produto obj = produtoService.findById(id);
-       return ResponseEntity.ok().body(obj);
+    public ResponseEntity<Produto> findById(@PathVariable Integer id) {
+        Produto obj = produtoService.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping()
@@ -34,12 +34,12 @@ public class ProdutoResource {
             @RequestParam(value = "name", defaultValue = "") String name,
             @RequestParam(value = "categorias", defaultValue = "") String categorias,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-            @RequestParam(value = "direction", defaultValue = "ASC")String direction) {
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         String nameDecoded = URL.decodeParam(name);
         List<Integer> ids = URL.decodeIntList(categorias);
-        Page<Produto> list = produtoService.search(nameDecoded, ids,page, linesPerPage, orderBy, direction);
+        Page<Produto> list = produtoService.search(nameDecoded, ids, page, linesPerPage, orderBy, direction);
         Page<ProdutoDTO> listDto = list.map(x -> new ProdutoDTO(x));
         return ResponseEntity.ok().body(listDto);
     }

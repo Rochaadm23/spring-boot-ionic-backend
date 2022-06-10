@@ -29,7 +29,7 @@ public class CategoriaResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoriaDTO>> findAll(){
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
         List<Categoria> list = categoriaService.findAll();
         List<CategoriaDTO> listDto = list.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
@@ -38,11 +38,11 @@ public class CategoriaResource {
     @GetMapping(value = "/page")
     public ResponseEntity<Page<CategoriaDTO>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "linesPerPage", defaultValue = "24")Integer linesPerPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-            @RequestParam(value = "direction", defaultValue = "ASC")String direction){
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         Page<Categoria> list = categoriaService.findPage(page, linesPerPage, orderBy, direction);
-        Page<CategoriaDTO> listDto = list.map(x -> new CategoriaDTO(x)) ;
+        Page<CategoriaDTO> listDto = list.map(x -> new CategoriaDTO(x));
         return ResponseEntity.ok().body(listDto);
     }
 
