@@ -9,6 +9,7 @@ import com.rsecinformation.cursomc.repositories.*;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -27,14 +28,19 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
     public Pedido findById(Integer id) {
         Optional<Pedido> obj = pedidoRepository.findById(id);
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    @Transactional
     public Pedido insert(Pedido obj) {
         obj.setId(null);
         obj.setInstant(new Date());
+        obj.setCliente(clienteService.findById(obj.getCliente().getId()));
         obj.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -50,6 +56,7 @@ public class PedidoService {
             itemPedido.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 }
