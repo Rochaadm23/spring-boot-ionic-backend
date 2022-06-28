@@ -5,6 +5,8 @@ import com.rsecinformation.cursomc.entities.enums.EstadoPagamento;
 import com.rsecinformation.cursomc.entities.enums.TipoCliente;
 import com.rsecinformation.cursomc.repositories.*;
 import com.rsecinformation.cursomc.services.DBService;
+import com.rsecinformation.cursomc.services.EmailService;
+import com.rsecinformation.cursomc.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -27,4 +29,8 @@ public class TestConfig {
         return true;
     }
 
+    @Bean
+    public EmailService emailService(){
+        return new MockEmailService();
+    }
 }
