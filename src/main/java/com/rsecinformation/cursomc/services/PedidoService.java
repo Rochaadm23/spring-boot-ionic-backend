@@ -1,15 +1,17 @@
 package com.rsecinformation.cursomc.services;
 
-import com.rsecinformation.cursomc.entities.Categoria;
 import com.rsecinformation.cursomc.entities.ItemPedido;
 import com.rsecinformation.cursomc.entities.PagamentoComBoleto;
 import com.rsecinformation.cursomc.entities.Pedido;
 import com.rsecinformation.cursomc.entities.enums.EstadoPagamento;
-import com.rsecinformation.cursomc.repositories.*;
+import com.rsecinformation.cursomc.repositories.ItemPedidoRepository;
+import com.rsecinformation.cursomc.repositories.PagamentoRepository;
+import com.rsecinformation.cursomc.repositories.PedidoRepository;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.Optional;
@@ -39,6 +41,7 @@ public class PedidoService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+
     @Transactional
     public Pedido insert(Pedido obj) {
         obj.setId(null);
@@ -59,7 +62,7 @@ public class PedidoService {
             itemPedido.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
-        emailService.sendOrderConfirmationEmail(obj);
+        emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
     }
 }
