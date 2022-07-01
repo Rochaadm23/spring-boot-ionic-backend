@@ -1,11 +1,9 @@
 package com.rsecinformation.cursomc.entities;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rsecinformation.cursomc.entities.enums.TipoCliente;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.type.CustomCollectionType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +23,9 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
+    @JsonIgnore
+    private String senha;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cliente")
     @Fetch(FetchMode.SUBSELECT)
     private List<Endereco> enderecos = new ArrayList<>();
@@ -40,12 +41,13 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(Integer id, String name, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+    public Cliente(Integer id, String name, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCod();
+        this.senha = senha;
     }
 
     public Integer getId() {
@@ -110,6 +112,14 @@ public class Cliente implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override
