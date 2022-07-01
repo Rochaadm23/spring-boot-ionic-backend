@@ -2,6 +2,7 @@ package com.rsecinformation.cursomc.services;
 
 import com.rsecinformation.cursomc.entities.*;
 import com.rsecinformation.cursomc.entities.enums.EstadoPagamento;
+import com.rsecinformation.cursomc.entities.enums.Perfil;
 import com.rsecinformation.cursomc.entities.enums.TipoCliente;
 import com.rsecinformation.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,49 +64,58 @@ public class DBService {
         cat2.getProdutos().addAll(Arrays.asList(p2, p4));
         cat3.getProdutos().addAll(Arrays.asList(p5, p6));
         cat4.getProdutos().addAll(Arrays.asList(p1, p2, p7));
-        cat5.getProdutos().addAll(Arrays.asList(p8));
+        cat5.getProdutos().add(p8);
         cat6.getProdutos().addAll(Arrays.asList(p9, p10));
-        cat7.getProdutos().addAll(Arrays.asList(p11));
+        cat7.getProdutos().add(p11);
 
         p1.getCategorias().addAll(Arrays.asList(cat1, cat4));
         p2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
-        p3.getCategorias().addAll(Arrays.asList(cat1));
-        p4.getCategorias().addAll(Arrays.asList(cat2));
-        p5.getCategorias().addAll(Arrays.asList(cat3));
-        p6.getCategorias().addAll(Arrays.asList(cat3));
-        p7.getCategorias().addAll(Arrays.asList(cat4));
-        p8.getCategorias().addAll(Arrays.asList(cat5));
-        p9.getCategorias().addAll(Arrays.asList(cat6));
-        p10.getCategorias().addAll(Arrays.asList(cat6));
-        p11.getCategorias().addAll(Arrays.asList(cat7));
+        p3.getCategorias().add(cat1);
+        p4.getCategorias().add(cat2);
+        p5.getCategorias().add(cat3);
+        p6.getCategorias().add(cat3);
+        p7.getCategorias().add(cat4);
+        p8.getCategorias().add(cat5);
+        p9.getCategorias().add(cat6);
+        p10.getCategorias().add(cat6);
+        p11.getCategorias().add(cat7);
 
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
         produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "São Paulo");
+        Estado est3 = new Estado(null, "Rio de Janeiro");
 
         Cidade c1 = new Cidade(null, "Uberlândia", est1);
         Cidade c2 = new Cidade(null, "São Paulo", est2);
         Cidade c3 = new Cidade(null, "Campinas", est2);
+        Cidade c4 = new Cidade(null, "Rio de Janeiro", est3);
 
-        est1.getCidades().addAll(Arrays.asList(c1));
+        est1.getCidades().add(c1);
         est2.getCidades().addAll(Arrays.asList(c2, c3));
+        est3.getCidades().add(c4);
 
-        estadoRepository.saveAll(Arrays.asList(est1, est2));
-        cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+        estadoRepository.saveAll(Arrays.asList(est1, est2, est3));
+        cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 
-        Cliente cli1 = new Cliente(null, "Bartolomeu Simpson", "fernandoribeiror@yahoo.com.br", "999.555.888.32", TipoCliente.PESSOAFISICA,passwordEncoder.encode("12345678"));
+        Cliente cli1 = new Cliente(null, "Bartolomeu Simpson", "fernandoribeiror@yahoo.com.br", "65945940011", TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
+        Cliente cli2 = new Cliente(null, "Homer Simpson", "devjava90@gmail.com", "95987316006", TipoCliente.PESSOAFISICA, passwordEncoder.encode("12345678"));
+        cli2.addPerfil(Perfil.ADMIN);
 
-        cli1.getTelefones().addAll(Arrays.asList("21973633259", "2138009150"));
+
+        cli1.getTelefones().addAll(Arrays.asList("973633259", "38009150"));
+        cli1.getTelefones().addAll(Arrays.asList("989561027", "35042020"));
 
         Endereco e1 = new Endereco(null, "Rua flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
         Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+        Endereco e3 = new Endereco(null, "Rua Rio de Janeiro", "300", "94", "Centro", "3822021", cli2, c4);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        cli2.getEnderecos().add(e3);
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -128,11 +138,11 @@ public class DBService {
         ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 
         ped1.getItens().addAll(Arrays.asList(ip1, ip2));
-        ped2.getItens().addAll(Arrays.asList(ip3));
+        ped2.getItens().add(ip3);
 
-        p1.getItens().addAll(Arrays.asList(ip1));
-        p2.getItens().addAll(Arrays.asList(ip3));
-        p3.getItens().addAll(Arrays.asList(ip2));
+        p1.getItens().add(ip1);
+        p2.getItens().add(ip3);
+        p3.getItens().add(ip2);
 
         itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
     }
