@@ -1,6 +1,7 @@
 package com.rsecinformation.cursomc.config;
 
 import com.rsecinformation.cursomc.security.JWTAuthenticationFilter;
+import com.rsecinformation.cursomc.security.JWTAuthorizationFilter;
 import com.rsecinformation.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,19 +25,18 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Environment environment;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JWTUtil jwtUtil;
-
     private static final String[] PUBLIC_MATCHERS = {
 
             "/h2-console/**",
 
     };
     private static final String[] PUBLIC_MATCHERS_GET = {"/produtos/**", "/categorias/**", "/estados/**"};
+    @Autowired
+    private Environment environment;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
