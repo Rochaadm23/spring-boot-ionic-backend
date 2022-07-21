@@ -34,8 +34,4 @@ public class SmtpEmailService extends AbstractEmailService {
         LOG.info("Email enviado");
     }
 
-    @Override
-    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
-
-    }
 }

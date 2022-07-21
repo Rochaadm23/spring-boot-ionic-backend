@@ -49,7 +49,7 @@ public class AuthService {
     private char randomChar() {
         /*
          * Gera um número inteiro aleatório entre 0 e 2. O intervalo varia de acordo com
-         * a qauntidade passada no método nextInt(?)
+         * a quantidade passada no método nextInt(?)
          */
 
         int opt = rand.nextInt(3);
