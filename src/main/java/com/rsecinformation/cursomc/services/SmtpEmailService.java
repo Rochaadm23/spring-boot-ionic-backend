@@ -1,5 +1,6 @@
 package com.rsecinformation.cursomc.services;
 
+import com.rsecinformation.cursomc.entities.Cliente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class SmtpEmailService extends AbstractEmailService {
         LOG.info("Enviando email...");
         javaMailSender.send(msg);
         LOG.info("Email enviado");
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+
     }
 }

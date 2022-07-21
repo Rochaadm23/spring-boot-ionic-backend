@@ -1,5 +1,6 @@
 package com.rsecinformation.cursomc.services;
 
+import com.rsecinformation.cursomc.entities.Cliente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,5 +23,10 @@ public class MockEmailService extends AbstractEmailService {
         LOG.info("Simulando envio de email HTML...");
         LOG.info(msg.toString());
         LOG.info("Email enviado");
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+
     }
 }

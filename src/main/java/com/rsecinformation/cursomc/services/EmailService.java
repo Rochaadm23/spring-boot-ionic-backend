@@ -1,8 +1,8 @@
 package com.rsecinformation.cursomc.services;
 
+import com.rsecinformation.cursomc.entities.Cliente;
 import com.rsecinformation.cursomc.entities.Pedido;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 
@@ -14,4 +14,7 @@ public interface EmailService {
     void sendOrderConfirmationHtmlEmail(Pedido obj);
 
     void sendHtmlEmail(MimeMessage msg);
+
+    void sendNewPasswordEmail(Cliente cliente, String newPass);
+
 }
