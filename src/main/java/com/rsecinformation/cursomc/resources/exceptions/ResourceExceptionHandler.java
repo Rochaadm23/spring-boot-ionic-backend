@@ -1,5 +1,6 @@
 package com.rsecinformation.cursomc.resources.exceptions;
 
+import com.rsecinformation.cursomc.services.exceptions.AuthorizationException;
 import com.rsecinformation.cursomc.services.exceptions.DataIntegrityException;
 import com.rsecinformation.cursomc.services.exceptions.DatabaseException;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
@@ -20,7 +21,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
-        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        StandardError err = new StandardError(System.currentTimeMillis(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
@@ -28,7 +29,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
         String error = "Database error";
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        StandardError err = new StandardError(System.currentTimeMillis(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
@@ -36,7 +37,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
         String error = "Database error";
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        StandardError err = new StandardError(System.currentTimeMillis(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
@@ -45,12 +46,18 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
         String error = "Erro de Validação";
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        ValidationError err = new ValidationError(Instant.now(), status.value(), error, error, request.getRequestURI());
+        ValidationError err = new ValidationError(System.currentTimeMillis(), status.value(), error, error, request.getRequestURI());
         for (FieldError x : e.getBindingResult().getFieldErrors()) {
             err.addError(x.getField(), x.getDefaultMessage());
         }
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
+                "Acesso negado.", e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
 }
 

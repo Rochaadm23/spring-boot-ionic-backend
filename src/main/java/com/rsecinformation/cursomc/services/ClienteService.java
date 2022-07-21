@@ -6,9 +6,12 @@ import com.rsecinformation.cursomc.dto.ClienteNewDTO;
 import com.rsecinformation.cursomc.entities.Cidade;
 import com.rsecinformation.cursomc.entities.Cliente;
 import com.rsecinformation.cursomc.entities.Endereco;
+import com.rsecinformation.cursomc.entities.enums.Perfil;
 import com.rsecinformation.cursomc.entities.enums.TipoCliente;
 import com.rsecinformation.cursomc.repositories.ClienteRepository;
 import com.rsecinformation.cursomc.repositories.EnderecoRepository;
+import com.rsecinformation.cursomc.security.UserSS;
+import com.rsecinformation.cursomc.services.exceptions.AuthorizationException;
 import com.rsecinformation.cursomc.services.exceptions.DataIntegrityException;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -35,8 +39,12 @@ public class ClienteService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public Cliente findById(Integer id) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
         Optional<Cliente> obj = clienteRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return obj.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado! ID: " + id + ". " + "Tipo: " + Cliente.class.getName()));
     }
 
     public List<Cliente> findAll() {
@@ -48,6 +56,7 @@ public class ClienteService {
         return clienteRepository.findAll(pageRequest);
     }
 
+    @Transactional
     public Cliente insert(Cliente obj) {
         obj = clienteRepository.save(obj);
         enderecoRepository.saveAll(obj.getEnderecos());
