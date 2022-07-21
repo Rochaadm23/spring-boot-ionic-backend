@@ -1,5 +1,6 @@
 package com.rsecinformation.cursomc.services;
 
+import com.rsecinformation.cursomc.entities.Cliente;
 import com.rsecinformation.cursomc.entities.ItemPedido;
 import com.rsecinformation.cursomc.entities.PagamentoComBoleto;
 import com.rsecinformation.cursomc.entities.Pedido;
@@ -7,11 +8,15 @@ import com.rsecinformation.cursomc.entities.enums.EstadoPagamento;
 import com.rsecinformation.cursomc.repositories.ItemPedidoRepository;
 import com.rsecinformation.cursomc.repositories.PagamentoRepository;
 import com.rsecinformation.cursomc.repositories.PedidoRepository;
+import com.rsecinformation.cursomc.security.UserSS;
+import com.rsecinformation.cursomc.services.exceptions.AuthorizationException;
 import com.rsecinformation.cursomc.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.Optional;
@@ -64,5 +69,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.findById(user.getId());
+        return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 }
