@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -75,5 +76,13 @@ public class ClienteResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PostMapping(value = "/picture")
+    public ResponseEntity<Void> uploadProfilePicture(@Valid @RequestParam(name = "file") MultipartFile multipartFile) {
+        URI uri = clienteService.uploadProfilePicture(multipartFile);
+
+        return ResponseEntity.created(uri).build();
     }
 }
