@@ -1,11 +1,8 @@
 package com.rsecinformation.cursomc.resources;
 
-import com.rsecinformation.cursomc.dto.CategoriaDTO;
 import com.rsecinformation.cursomc.dto.ClienteDTO;
 import com.rsecinformation.cursomc.dto.ClienteNewDTO;
-import com.rsecinformation.cursomc.entities.Categoria;
 import com.rsecinformation.cursomc.entities.Cliente;
-import com.rsecinformation.cursomc.services.CategoriaService;
 import com.rsecinformation.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +28,12 @@ public class ClienteResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
         Cliente obj = clienteService.findById(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping(value = "/email")
+    public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value") String email) {
+        Cliente obj = clienteService.findByEmail(email);
         return ResponseEntity.ok().body(obj);
     }
 
