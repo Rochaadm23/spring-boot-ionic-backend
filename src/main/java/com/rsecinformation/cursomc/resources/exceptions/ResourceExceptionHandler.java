@@ -44,7 +44,7 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
         String error = "Erro de Validação";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError(System.currentTimeMillis(), status.value(), error, error, request.getRequestURI());
         for (FieldError x : e.getBindingResult().getFieldErrors()) {
             err.addError(x.getField(), x.getDefaultMessage());
@@ -70,19 +70,19 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> amazonService(AmazonServiceException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.valueOf(e.getErrorCode());
         StandardError err = new StandardError(System.currentTimeMillis(), status.value(),
-                "BAD REQUEST", e.getMessage(), request.getRequestURI());
+                "Error Amazon Service", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(AmazonClientException.class)
     public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
         StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
-                "BAD REQUEST", e.getMessage(), request.getRequestURI());
+                "Error Amazon Client", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
     @ExceptionHandler(AmazonS3Exception.class)
-    public ResponseEntity<StandardError> amazonClient(AmazonS3Exception e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> amazonS3(AmazonS3Exception e, HttpServletRequest request) {
         StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
                 "BAD REQUEST", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
